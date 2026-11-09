@@ -36,10 +36,46 @@
 </section>
 <script>
 const home=document.getElementById('home'),viewer=document.getElementById('viewer'),frame=document.getElementById('appframe'),vsub=document.getElementById('vsub');
-function openSubject(file,label){vsub.textContent=label;home.style.display='none';viewer.classList.add('active');if(!frame.src.endsWith('/'+file))frame.src=file;history.pushState({subject:file},'', '#'+file.replace('.html',''));}
-function closeSubject(){viewer.classList.remove('active');home.style.display='flex';history.pushState({},'',location.pathname);}
-window.addEventListener('popstate',()=>{if(viewer.classList.contains('active')){viewer.classList.remove('active');home.style.display='flex';}});
-window.addEventListener('keydown',e=>{if(e.key==='Escape'&&viewer.classList.contains('active'))closeSubject()});
+history.replaceState({view:'home'}, '', location.pathname + location.search);
+
+function showSubject(file,label) {
+  vsub.textContent = label;
+  home.style.display = 'none';
+  viewer.classList.add('active');
+  if (!frame.src.endsWith('/' + file)) frame.src = file;
+}
+
+function openSubject(file,label) {
+  if (viewer.classList.contains('active')) return;
+  history.pushState({view:'subject',file,label}, '', '#' + file.replace('.html',''));
+  showSubject(file,label);
+}
+
+function showHome() {
+  viewer.classList.remove('active');
+  home.style.display = 'flex';
+}
+
+function closeSubject() {
+  if (history.state && history.state.view === 'subject') {
+    history.back();
+  } else {
+    showHome();
+  }
+}
+
+window.addEventListener('popstate', event => {
+  if (event.state && event.state.view === 'subject') {
+    showSubject(event.state.file,event.state.label);
+  } else {
+    showHome();
+  }
+});
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && viewer.classList.contains('active')) closeSubject();
+});
+
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
 </body></html>
