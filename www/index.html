@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b18">
+<meta name="description" content="BasicX — Physics and Chemistry olympiad preparation in one place.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BasicX">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<title>BasicX</title>
+<style>
+:root{color-scheme:dark;--bg:#070914;--card:#11172b;--line:#293454;--text:#f3f6ff;--muted:#a5b1cc;--cyan:#35d8ff;--purple:#35d8ff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif}body{min-height:100dvh;background:radial-gradient(ellipse at 10% 0%,#10345a66,transparent 42%),var(--bg)}
+#home{min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:clamp(18px,4vw,42px) 16px calc(28px + env(safe-area-inset-bottom))}.brand{width:min(230px,54vw);aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 0 14px #287bff33)}h1{font-size:clamp(38px,7vw,62px);letter-spacing:.06em;margin:4px 0 5px;font-weight:900;background:linear-gradient(100deg,#fff 20%,#35d8ff 80%);color:transparent;background-clip:text}.tag{color:var(--muted);font-size:13px;letter-spacing:.18em;text-align:center}.intro{text-align:center;margin:12px 0 28px}.intro p{color:var(--muted);font-size:14px;max-width:540px;line-height:1.6;margin:12px auto 0}.choices{width:min(760px,100%);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.subject{position:relative;overflow:hidden;text-align:left;border:1px solid var(--line);border-radius:22px;padding:22px;background:linear-gradient(145deg,#131d36,#0c1020);color:var(--text);cursor:pointer;min-height:190px;transition:transform .18s,border-color .18s,box-shadow .18s}.subject:active{transform:scale(.98)}.subject:hover{border-color:#5acfff;box-shadow:0 0 18px #238bff18}.subject:focus-visible,button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}.subject .symbol{font-size:32px}.subject h2{font-size:25px;margin:12px 0 4px}.subject p{color:var(--muted);font-size:13px;margin:0;line-height:1.5}.subject .go{display:inline-block;margin-top:17px;color:#83e8ff;font-weight:700;font-size:13px}.subject.chem .go{color:#83e8ff}.subject:before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-75px;top:-85px;background:#26baff20;filter:blur(3px)}.subject.chem:before{background:#35d8ff20}.foot{color:#7785a5;font-size:11px;text-align:center;margin-top:auto;padding-top:28px}
+#viewer{display:none;position:fixed;inset:0;background:var(--bg);z-index:5}#viewer.active{display:block}.viewerbar{height:54px;position:absolute;inset:0 0 auto;z-index:8;display:flex;align-items:center;gap:12px;padding:7px 12px;background:#090d1ded;border-bottom:1px solid #293454;backdrop-filter:blur(12px)}.back{border:1px solid #405071;background:#151d32;color:white;border-radius:12px;padding:8px 13px;font-weight:700}.vtitle{font-weight:800;letter-spacing:.04em}.vsub{font-size:11px;color:var(--muted)}#appframe{position:absolute;inset:54px 0 0;width:100%;height:calc(100% - 54px);border:0;background:white} @media(max-width:560px){.choices{grid-template-columns:1fr;gap:12px}.subject{min-height:150px;padding:18px}.brand{width:min(190px,48vw)}.intro{margin-bottom:22px}}
+@media(min-width:900px){#home{justify-content:center}.subject{min-height:210px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main id="home">
+ <img class="brand" src="assets/basicx-logo.webp" alt="BasicX shield logo">
+ <section class="intro"><h1>BasicX</h1><div class="tag">STUDY · PRACTICE · EXCEL</div><p>Physics aur Chemistry ki preparation ek hi jagah. Apna subject select karo aur learning continue karo.</p></section>
+ <section class="choices" aria-label="Choose a subject">
+  <button class="subject" type="button" onclick="openSubject('nsep.html','NSEP · Physics')"><span class="symbol">⚛️</span><h2>NSEP</h2><p>National Standard Examination in Physics<br>Physics Question Bank</p><span class="go">Open Physics →</span></button>
+  <button class="subject chem" type="button" onclick="openSubject('nsec.html','NSEC · Chemistry')"><span class="symbol">🧪</span><h2>NSEC</h2><p>National Standard Examination in Chemistry<br>Chemistry Question Bank</p><span class="go">Open Chemistry →</span></button>
+ </section>
+ <div class="foot">BasicX · Your learning space · Mobile & Desktop</div>
+</main>
+<section id="viewer" aria-label="Subject app">
+ <header class="viewerbar"><button class="back" type="button" onclick="closeSubject()">← Back</button><div><div class="vtitle">BasicX</div><div class="vsub" id="vsub">Subject</div></div></header>
+ <iframe id="appframe" title="BasicX subject workspace" allow="autoplay; fullscreen; clipboard-read; clipboard-write"></iframe>
+</section>
+<script>
+const home=document.getElementById('home'),viewer=document.getElementById('viewer'),frame=document.getElementById('appframe'),vsub=document.getElementById('vsub');
+function openSubject(file,label){vsub.textContent=label;home.style.display='none';viewer.classList.add('active');if(!frame.src.endsWith('/'+file))frame.src=file;history.pushState({subject:file},'', '#'+file.replace('.html',''));}
+function closeSubject(){viewer.classList.remove('active');home.style.display='flex';history.pushState({},'',location.pathname);}
+window.addEventListener('popstate',()=>{if(viewer.classList.contains('active')){viewer.classList.remove('active');home.style.display='flex';}});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&viewer.classList.contains('active'))closeSubject()});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body></html>
