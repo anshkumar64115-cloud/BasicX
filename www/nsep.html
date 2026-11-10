@@ -445,7 +445,7 @@ function drawCard(name){const W=1080,H=1500,cv=document.createElement("canvas");
  x.textAlign="left";Object.keys(sc).forEach((k,j)=>{const y=1228+j*32,f=sc[k][0]/sc[k][1];x.fillStyle=T.mut;x.font=F(500,26,SAN);x.fillText(k,80,y+10);x.fillStyle=T.line;rr(x,260,y-10,560,20,10);if(f>0){x.fillStyle=T.ok;rr(x,260,y-10,Math.max(20,560*f),20,10)}x.fillStyle=T.ink;x.textAlign="right";x.fillText(sc[k][0]+"/"+sc[k][1],1000,y+10);x.textAlign="left"});
  x.textAlign="center";x.fillStyle=T.mut;x.font=F(500,26,SAN);x.fillText("Aaj "+(D[day(new Date())]||0)+" solved · "+Math.floor((M[day(new Date())]||0)/60)+" min padhai · "+new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}),W/2,1450);
  CARD=cv;shi.src=cv.toDataURL("image/png");sh.hidden=false}
-shb.onclick=()=>{CARD.toBlob(async b=>{try{const f=new File([b],"nsep-progress.png",{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],title:"NSEP progress"});else throw 0}catch(e){toast("Image ko long-press karke save/share karo")}})};
+shb.onclick=async()=>{try{await window.BasicXShare(CARD,"NSEP progress","nsep-progress.png")}catch(e){toast("Share nahi ho paya. Dobara try karo")}};
 /* focus sound */
 let AC=null,SNDG=null,SNDS=null,SNDA=null,SND="off",SNDON=false,PV=false;const SL=["off","rain","brown","white","midnight","sakura","night","jazz","star","deep","zen"],SN={off:"🔇 Off",rain:"🌧 Rain",brown:"🌊 Brown",white:"☁ White",midnight:"🎹 Midnight Study",sakura:"🌸 Sakura Rain",night:"🚆 Night Train",jazz:"☕ Cafe Jazz",star:"✨ Starlight",deep:"🌌 Deep Focus",zen:"🔔 Zen Garden"};
 try{SND=localStorage.getItem("nsepSnd")||"off";tvl.value=localStorage.getItem("nsepVol")||40}catch(e){}SND={lofi:"midnight",ambient:"deep",piano:"sakura"}[SND]||SND;if(!SL.includes(SND))SND="off";
@@ -706,4 +706,4 @@ axv.onchange=async()=>{const fs=[...axv.files];axv.value="";if(!fs.length)return
  u.voices=u.voices.slice(-5);await axSave(axSlot);toast(n?"🎙 "+n+" clip add ho gayi":"⚠ Koi clip add nahi hui");axStudio()};
 axLoad();
 rvp.onclick=e=>{if(e.target==rvp)rvp.hidden=true};showT();addEventListener("hashchange",route);route();window.AXREADY=true;
-</script></body></html>
+</script><script src="basicx-share.js"></script></body></html>
